@@ -1,60 +1,53 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using CodeBase.ScriptableObjects;
-using DG.Tweening;
-using TMPro;
+using CodeBase.Resources;
 using UnityEngine;
 
 namespace CodeBase.Factory
 {
     public class Factory : MonoBehaviour
     {
-        [SerializeField] private FactoryProperties factoryProperties;
-        [SerializeField] private GameObject resourcePrefab;
-        [SerializeField] private Transform resourcesHolder;
-        [SerializeField] private ProductionProgressBar progressBar;
-        [SerializeField] private TextMeshProUGUI stopProductionText;
-        
-        private float resourceYOffset;
-        private const string maxCapacityStopReason = "maximum capacity reached !";
-        private const string noResourcesStopReason = "necessary resources run out !";
-        private List<GameObject> resources = new List<GameObject>();
+        [SerializeField] protected float produceDuration;
+        [SerializeField] protected ResourceProperties resourceProperties;
+        [SerializeField] private Resource resourcePrefab;
+        [SerializeField] protected FactoryUI factoryUI;
+        [SerializeField] protected Warehouse warehouse;
 
-        private void Start()
+        protected float productionTimePassed = 0f;
+        protected const string maxCapacityStopReason = "maximum capacity reached !";
+        private void Update()
         {
-            StartCoroutine(CreateResource());
+            CreateResources();
         }
 
-        private IEnumerator CreateResource()
+        protected virtual void CreateResources()
         {
-            while (resources.Count < factoryProperties.MaxCapacity)
+            if (!warehouse.ReachMaxCapacity())
             {
-                var produceDuration = factoryProperties.ProduceDuration;
-                progressBar.UpdateBar(produceDuration);
-                yield return new WaitForSeconds(produceDuration);
-                var resource = Instantiate(resourcePrefab, resourcesHolder);
-                PlaceResource(resource);
-                resources.Add(resource);
+                productionTimePassed += Time.deltaTime;
+                factoryUI.UpdateProductionBar(productionTimePassed, produceDuration);
+
+                if (productionTimePassed >= produceDuration)
+                {
+                    InstantiateResource();
+                    
+                    if (warehouse.ReachMaxCapacity())
+                        factoryUI.DisplayStopHintText(maxCapacityStopReason, resourceProperties.Number);
+
+                    ResetProductionTime();
+                }
             }
-            DisplayStopHintText(maxCapacityStopReason);
         }
 
-        private void PlaceResource(GameObject resource)
+        protected void InstantiateResource()
         {
-            var localPosition = resource.transform.localPosition;
-            resource.transform.localPosition = new Vector3(localPosition.x, resourceYOffset, localPosition.z);
-            resourceYOffset += resourcePrefab.transform.localScale.y + 0.05f;
+            var resource = Instantiate(resourcePrefab, warehouse.ResourcesHolder);
+            resource.Configure(resourceProperties);
+            warehouse.CreatedResource(resource);
         }
         
-        public void DisplayStopHintText(string reason)
-        {
-            stopProductionText.text = "Stopped resource nr. " + factoryProperties.ResourceNr + " production, " + reason;
-            var textInstance = Instantiate(stopProductionText, stopProductionText.transform.parent);
-            textInstance.gameObject.SetActive(true);
-            textInstance.transform.DOMoveY(textInstance.transform.position.y + 50f, 3f);
-            textInstance.DOFade(0f, 2f).SetDelay(1f).OnComplete(() => { Destroy(textInstance.gameObject); });;
-        }
- 
+
+        public void ResetProductionTime() => productionTimePassed = 0f;
+        
     }
 }

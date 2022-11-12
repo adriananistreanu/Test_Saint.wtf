@@ -1,5 +1,4 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +15,13 @@ namespace CodeBase.Factory
 
         private void ResetBar()
         {
-            fillBar.fillAmount = 1f;
+            fillBar.fillAmount = 0f;
         }
 
         public void UpdateBar(float duration)
         {
             ResetBar();
-            fillBar.DOFillAmount(0f, duration).SetEase(Ease.Linear);
+            fillBar.DOFillAmount(1f, duration).SetEase(Ease.Linear);
         }
         
         

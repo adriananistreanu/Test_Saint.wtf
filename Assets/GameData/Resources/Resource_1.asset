@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a896c996f9841adbfec744c74e01598, type: 3}
-  m_Name: Factory_1
+  m_Script: {fileID: 11500000, guid: 20dd331f9f5f477b8fe264c45f59cb16, type: 3}
+  m_Name: Resource_1
   m_EditorClassIdentifier: 
-  produceDuration: 3
-  resourceNr: 1
-  maxCapacity: 5
+  number: 1
+  type: 0
+  material: {fileID: 2100000, guid: b1a54c20ca091824da0231774304885e, type: 2}
