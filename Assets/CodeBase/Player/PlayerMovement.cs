@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CodeBase.Player
 {
@@ -23,28 +22,25 @@ namespace CodeBase.Player
         {
             if (joystick.Direction != Vector2.zero)
             {
-                Move();
-                Rotate();
+                Vector3 direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
+                Move(direction);
+                Rotate(direction);
             }
             else
             {
                 rb.velocity = Vector3.zero;
             }
-
         }
 
-        private void Move()
+        private void Move(Vector3 dir)
         {
-            Vector3 direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
-            rb.MovePosition(transform.position + direction * moveSpeed * Time.fixedDeltaTime);
+            rb.MovePosition(transform.position + dir * (moveSpeed * Time.fixedDeltaTime));
             ClampMove();
         }
 
-        private void Rotate()
+        private void Rotate(Vector3 dir)
         {
-            Vector3 direction = Vector3.forward * joystick.Vertical + Vector3.right * joystick.Horizontal;
-            
-            Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion lookRotation = Quaternion.LookRotation(dir, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(lookRotation, transform.rotation, rotateSpeed * Time.fixedDeltaTime);
         }
 

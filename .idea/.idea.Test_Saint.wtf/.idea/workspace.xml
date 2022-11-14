@@ -9,7 +9,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../Candle-Idle-3D/Assets/CodeBase/Candle/Candle.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/CodeBase/Factory/Warehouse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/CodeBase/Warehouses/ProducedWarehouse.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -69,7 +69,10 @@
       <workItem from="1668094648649" duration="3272000" />
       <workItem from="1668114223131" duration="4759000" />
       <workItem from="1668200390173" duration="5749000" />
-      <workItem from="1668254851300" duration="7534000" />
+      <workItem from="1668254851300" duration="18464000" />
+      <workItem from="1668354488299" duration="1269000" />
+      <workItem from="1668371363236" duration="10730000" />
+      <workItem from="1668421791143" duration="9345000" />
     </task>
     <servers />
   </component>
